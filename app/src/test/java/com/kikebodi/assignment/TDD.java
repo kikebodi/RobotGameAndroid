@@ -101,4 +101,45 @@ public class TDD {
         mRobot.turnLeft();
         Assert.assertEquals("Robot doesn't turn left correctly",Direction.SOUTH,mRobot.getDirection());
     }
+
+    @Test
+    public void ReportPosition() throws Position.BoardNonDefinedException, Position.OutOfBoardException {
+        Position.setBoardSize(5,5);
+        Robot myRobot = new Robot(2,2,Direction.NORTH);
+        Assert.assertEquals("Robot doesn't return default position",new Position(2,2),myRobot.getPosition());
+
+        myRobot.setPosition(new Position(4,4));
+        Assert.assertEquals("Robot doesn't return current position", new Position(4,4),myRobot.getPosition());
+        Assert.assertNotSame("Robot doesn't know it's position",new Position(3,4),myRobot.getPosition());
+    }
+
+    @Test
+    public void TestMovement() throws Position.BoardNonDefinedException, Position.OutOfBoardException {
+        Position.setBoardSize(5,5);
+        Robot mRobot = new Robot(0,0,Direction.NORTH);
+
+        mRobot.move();
+        Assert.assertEquals("Robot doesn't move",new Position(0,1),mRobot.getPosition());
+        mRobot.move();
+        Assert.assertEquals("Robot doesn't move",new Position(0,2),mRobot.getPosition());
+        mRobot.move();
+        Assert.assertEquals("Robot doesn't move",new Position(0,3),mRobot.getPosition());
+        mRobot.move();
+        Assert.assertEquals("Robot doesn't move",new Position(0,4),mRobot.getPosition());
+        mRobot.move();
+        Assert.assertEquals("Robot went out of the room",new Position(0,4),mRobot.getPosition());
+
+        mRobot = new Robot(0,0,Direction.EAST);
+
+        mRobot.move();
+        Assert.assertEquals("Robot doesn't move",new Position(1,0),mRobot.getPosition());
+        mRobot.move();
+        Assert.assertEquals("Robot doesn't move",new Position(2,0),mRobot.getPosition());
+        mRobot.move();
+        Assert.assertEquals("Robot doesn't move",new Position(3,0),mRobot.getPosition());
+        mRobot.move();
+        Assert.assertEquals("Robot doesn't move",new Position(4,0),mRobot.getPosition());
+        mRobot.move();
+        Assert.assertEquals("Robot went out of the room",new Position(4,0),mRobot.getPosition());
+    }
 }

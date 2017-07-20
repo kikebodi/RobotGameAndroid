@@ -12,14 +12,14 @@ public class Position {
     private int x;
     private int y;
 
-    public Position(int x, int y) throws BoardNonDefinedException, IllegalArgumentException {
+    public Position(int x, int y) throws BoardNonDefinedException, OutOfBoardException {
         if(max_x<0 || max_y<0) throw new BoardNonDefinedException();
 
         if(x<max_x && y<max_y && x>-1 && y>-1){
             this.x = x;
             this.y = y;
         }else{
-            throw new IllegalArgumentException();
+            throw new OutOfBoardException();
         }
     }
 
@@ -40,5 +40,13 @@ public class Position {
             super();
         }
     }
+
+    public class OutOfBoardException extends Exception {
+        public OutOfBoardException() {
+            super();
+        }
+    }
+
+
 
 }

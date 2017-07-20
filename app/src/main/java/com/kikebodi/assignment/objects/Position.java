@@ -24,7 +24,7 @@ public class Position {
     public Position(int x, int y) throws BoardNonDefinedException, OutOfBoardException {
         if(max_x<0 || max_y<0) throw new BoardNonDefinedException();
 
-        if(x<=max_x && y<=max_y && x>-1 && y>-1){
+        if(x<=max_x && y<=max_y && x>=0 && y>=0){
             this.x = x;
             this.y = y;
         }else{

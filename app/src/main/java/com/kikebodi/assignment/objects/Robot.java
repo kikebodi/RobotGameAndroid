@@ -82,13 +82,13 @@ public class Robot {
 
         switch (currentDirection){
             case NORTH:
-                y++;
+                y--;
                 break;
             case EAST:
                 x++;
                 break;
             case SOUTH:
-                y--;
+                y++;
                 break;
             case WEST:
                 x--;

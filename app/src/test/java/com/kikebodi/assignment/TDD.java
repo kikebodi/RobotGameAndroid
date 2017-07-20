@@ -116,7 +116,7 @@ public class TDD {
     @Test
     public void TestMovement() throws Position.BoardNonDefinedException, Position.OutOfBoardException {
         Position.setBoardSize(5,5);
-        Robot mRobot = new Robot(0,0,Direction.NORTH);
+        Robot mRobot = new Robot(0,0,Direction.SOUTH);
 
         mRobot.move();
         Assert.assertEquals("Robot doesn't move",new Position(0,1),mRobot.getPosition());

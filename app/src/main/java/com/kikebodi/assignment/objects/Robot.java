@@ -7,14 +7,11 @@ package com.kikebodi.assignment.objects;
  */
 
 public class Robot {
-
-    private int x;
-    private int y;
     private Direction currentDirection;
+    private Position currentPosition;
 
-    public Robot(int x, int y, Direction dir){
-        this.x = x;
-        this.y = y;
+    public Robot(int x, int y, Direction dir) throws Position.BoardNonDefinedException {
         this.currentDirection = dir;
+        this.currentPosition = new Position(x,y);
     }
 }

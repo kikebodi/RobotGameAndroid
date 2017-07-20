@@ -30,6 +30,11 @@ public class Position {
         max_y = y-1;
     }
 
+    public static void resetBoard(){
+        max_x = -1;
+        max_y = -1;
+    }
+
     public class BoardNonDefinedException extends Exception {
         public BoardNonDefinedException() {
             super();

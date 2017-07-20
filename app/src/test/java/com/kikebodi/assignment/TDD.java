@@ -6,6 +6,7 @@ import com.kikebodi.assignment.objects.Robot;
 
 import junit.framework.Assert;
 
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -15,6 +16,11 @@ import org.junit.Test;
  */
 
 public class TDD {
+
+    @Before
+    public void resetBoard() {
+        Position.resetBoard();
+    }
 
     @Test
     public void createBoardGame() throws Position.BoardNonDefinedException {
@@ -45,6 +51,7 @@ public class TDD {
 
     @Test
     public void getRobot() throws Position.BoardNonDefinedException {
+        Position.setBoardSize(5,5);
         Robot myRobot = new Robot(0,0, Direction.NORTH);
         Assert.assertNotNull(myRobot);
     }

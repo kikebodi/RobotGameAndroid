@@ -37,6 +37,16 @@ public class MainActivity extends AppCompatActivity{
     @Override
     public void onStart(){
         super.onStart();
+        //https://stackoverflow.com/questions/8418868/how-to-know-when-an-activity-finishes-a-layout-pass
+        ViewTreeObserver vto = gridview.getViewTreeObserver();
+        vto.addOnGlobalLayoutListener (new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                gridview.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                placeRobot();
+                executeCommands();
+            }
+        });
     }
 
     public int getTotalItems(){
@@ -57,22 +67,6 @@ public class MainActivity extends AppCompatActivity{
         gridview.setNumColumns(colums);
         imageAdapter = new ImageAdapter(this);
         gridview.setAdapter(imageAdapter);
-        //https://stackoverflow.com/questions/8418868/how-to-know-when-an-activity-finishes-a-layout-pass
-        ViewTreeObserver vto = gridview.getViewTreeObserver();
-        vto.addOnGlobalLayoutListener (new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                gridview.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                placeRobot();
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        executeCommands();
-                    }
-                });
-
-            }
-        });
     }
 
     private void createBoard() {
@@ -131,7 +125,13 @@ public class MainActivity extends AppCompatActivity{
                     e.printStackTrace();
                 }
                 Log.d(TAG, "X: " + myRobot.getPosition().getX() + " Y: " + myRobot.getPosition().getY() + " Direction: " + myRobot.getDirection());
-                ((ImageAdapter)gridview.getAdapter()).setCursor(myRobot.getPosition().getX(),myRobot.getPosition().getY());
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ((ImageAdapter)gridview.getAdapter()).setCursor(myRobot.getPosition().getX(),myRobot.getPosition().getY());
+                    }
+                });
+                gridview.invalidateViews();
             }
         }
     }

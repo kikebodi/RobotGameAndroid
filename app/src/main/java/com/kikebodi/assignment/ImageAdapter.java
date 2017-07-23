@@ -1,4 +1,4 @@
-package com.kikebodi.assignment.objects;
+package com.kikebodi.assignment;
 
 import android.content.Context;
 import android.util.Log;
@@ -10,6 +10,7 @@ import android.widget.ImageView;
 
 import com.kikebodi.assignment.MainActivity;
 import com.kikebodi.assignment.R;
+import com.kikebodi.assignment.objects.Position;
 
 import java.util.Arrays;
 
@@ -45,6 +46,11 @@ public class ImageAdapter extends BaseAdapter {
         return 0;
     }
 
+    /**
+     * Set robot position.
+     * @param x
+     * @param y
+     */
     public void setCursor(int x, int y){
         int currentPosition = getPositionByCoords(x,y);
         references = new Integer[((MainActivity)mContext).getTotalItems()];
@@ -68,6 +74,12 @@ public class ImageAdapter extends BaseAdapter {
         }
     }
 
+    /**
+     * Regarding the coordinates, get the item position in array
+     * @param x
+     * @param y
+     * @return
+     */
     private int getPositionByCoords(int x, int y){
         int colums = Position.max_x+1;
         int pos = (colums*(y)) + x;

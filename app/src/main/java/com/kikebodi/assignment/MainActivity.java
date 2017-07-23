@@ -8,7 +8,6 @@ import android.view.ViewTreeObserver;
 import android.widget.GridView;
 
 import com.kikebodi.assignment.objects.Direction;
-import com.kikebodi.assignment.objects.ImageAdapter;
 import com.kikebodi.assignment.objects.Position;
 import com.kikebodi.assignment.objects.Robot;
 
@@ -45,13 +44,16 @@ public class MainActivity extends AppCompatActivity{
         vto.addOnGlobalLayoutListener (new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                //gridview.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 Log.d("TEST", "Generated Layout");
+                //As we need to show each iteration, each command will be performed after Layout generation.
                 executeCommand();
             }
         });
     }
 
+    /**
+     * Create global variable for movement commands.
+     */
     private void prepareCommands() {
         String[] commands = input1.split("\n");
         if (commands.length == 3) {
@@ -67,6 +69,11 @@ public class MainActivity extends AppCompatActivity{
         return myRobot.getDirection();
     }
 
+    /**
+     * Polulate the Gridview with the game dimensions
+     * @param colums
+     * @param rows
+     */
     private void fillGridView(int colums, int rows){
         totalItems = colums*rows;
         gridview = (GridView) findViewById(R.id.gridview);
@@ -75,6 +82,9 @@ public class MainActivity extends AppCompatActivity{
         gridview.setAdapter(imageAdapter);
     }
 
+    /**
+     * Initialize board and populate Gridview
+     */
     private void createBoard() {
         String[] commands = input1.split("\n");
         if (commands.length == 3) {
@@ -136,9 +146,11 @@ public class MainActivity extends AppCompatActivity{
             moveCommands = moveCommands.substring(1);
             gridview.invalidateViews();
         }
-
     }
 
+    /**
+     * Convert the @param s into a Direction object
+     */
     private Direction getDirection(String s) {
         switch (s) {
             case "N":

@@ -9,6 +9,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 
 import com.kikebodi.assignment.MainActivity;
+import com.kikebodi.assignment.R;
 
 import java.util.Arrays;
 
@@ -48,32 +49,27 @@ public class ImageAdapter extends BaseAdapter {
         int currentPosition = getPositionByCoords(x,y);
         references = new Integer[((MainActivity)mContext).getTotalItems()];
         Arrays.fill(references, android.R.drawable.alert_dark_frame);
-        references[currentPosition] = android.R.drawable.ic_media_play;
-        setDirection(currentPosition);
+        references[currentPosition] = getItemDirection();
         notifyDataSetChanged();
     }
 
-    public void setDirection(int pos) {
-        ImageView item = getItem(pos);
-        try{
-            switch (((MainActivity) mContext).getRobotDirection()) {
-                case NORTH:
-                    item.setRotation(270);
-                    break;
-                case SOUTH:
-                    item.setRotation(90);
-                    break;
-                case WEST:
-                    item.setRotation(180);
-                    break;
-                default:
-                    //do nothing
-            }
-        }catch (NullPointerException e){Log.d(TAG, "Catched NullPointerException");}
+    public int getItemDirection(){
+        switch (((MainActivity) mContext).getRobotDirection()) {
+            case NORTH:
+                return R.mipmap.ic_arrow_upward_black_24dp;
+            case SOUTH:
+                return R.mipmap.ic_arrow_downward_black_24dp;
+            case WEST:
+                return R.mipmap.ic_arrow_back_black_24dp;
+            case EAST:
+                return R.mipmap.ic_arrow_forward_black_24dp;
+            default:
+                return -1;
+        }
     }
 
     private int getPositionByCoords(int x, int y){
-        int colums = ((MainActivity)mContext).getTotalColumns();
+        int colums = Position.max_x+1;
         int pos = (colums*(y)) + x;
         return pos;
     }

@@ -19,6 +19,7 @@ public class MainActivity extends AppCompatActivity{
     private ImageAdapter imageAdapter;
     private int totalItems;
     private Robot myRobot;
+    private String moveCommands;
     private final String TAG = MainActivity.class.getName();
     private final String input1 = "5 5\n" +
             "0 0 E\n" +
@@ -30,31 +31,36 @@ public class MainActivity extends AppCompatActivity{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-
-        createBoard();
     }
 
     @Override
     public void onStart(){
         super.onStart();
+        //Init game
+        createBoard();
+        placeRobot();
+        prepareCommands();
         //https://stackoverflow.com/questions/8418868/how-to-know-when-an-activity-finishes-a-layout-pass
         ViewTreeObserver vto = gridview.getViewTreeObserver();
         vto.addOnGlobalLayoutListener (new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                gridview.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                placeRobot();
-                executeCommands();
+                //gridview.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                Log.d("TEST", "Generated Layout");
+                executeCommand();
             }
         });
     }
 
-    public int getTotalItems(){
-        return totalItems;
+    private void prepareCommands() {
+        String[] commands = input1.split("\n");
+        if (commands.length == 3) {
+            moveCommands = commands[2];
+        }
     }
 
-    public int getTotalColumns(){
-        return gridview.getNumColumns();
+    public int getTotalItems(){
+        return totalItems;
     }
 
     public Direction getRobotDirection(){
@@ -99,41 +105,38 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
-    private void executeCommands(){
-        String[] commands = input1.split("\n");
-        if (commands.length == 3) {
-            for (int i = 0; i < commands[2].length(); i++) {
-                switch (commands[2].charAt(i)) {
-                    case 'R':
-                        myRobot.turnRight();
-                        Log.d(TAG, "RIGHT");
-                        break;
-                    case 'L':
-                        myRobot.turnLeft();
-                        Log.d(TAG, "LEFT");
-                        break;
-                    case 'F':
-                        myRobot.move();
-                        Log.d(TAG, "FORWARD");
-                        break;
-                    default:
-                        //do nothing
-                }
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                Log.d(TAG, "X: " + myRobot.getPosition().getX() + " Y: " + myRobot.getPosition().getY() + " Direction: " + myRobot.getDirection());
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        ((ImageAdapter)gridview.getAdapter()).setCursor(myRobot.getPosition().getX(),myRobot.getPosition().getY());
-                    }
-                });
-                gridview.invalidateViews();
+    private void executeCommand(){
+        if(moveCommands.length() > 0){
+            switch (moveCommands.charAt(0)) {
+                case 'R':
+                    myRobot.turnRight();
+                    Log.d(TAG, "RIGHT");
+                    break;
+                case 'L':
+                    myRobot.turnLeft();
+                    Log.d(TAG, "LEFT");
+                    break;
+                case 'F':
+                    myRobot.move();
+                    Log.d(TAG, "FORWARD");
+                    break;
+                default:
+                    //do nothing
             }
+            try {
+                Thread.sleep(1500);
+            } catch (InterruptedException e) {}
+            Log.d(TAG, "X: " + myRobot.getPosition().getX() + " Y: " + myRobot.getPosition().getY() + " Direction: " + myRobot.getDirection());
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    ((ImageAdapter)gridview.getAdapter()).setCursor(myRobot.getPosition().getX(),myRobot.getPosition().getY());
+                }
+            });
+            moveCommands = moveCommands.substring(1);
+            gridview.invalidateViews();
         }
+
     }
 
     private Direction getDirection(String s) {
